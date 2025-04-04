@@ -2,7 +2,7 @@ env: slp
 
 env_args:
   map_name: "simple_pricing" # others can be found in mpe.py
-  continuous_actions: False
+  continuous_actions: True
   max_cycles: 25
 
 mask_flag: False

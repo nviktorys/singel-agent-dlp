@@ -14,7 +14,7 @@ REGISTRY["simple_pricing"] = simple_pricing
 
 policy_mapping_dict = {
     "simple_pricing": {
-        "description": "one agent, customer with random decisioning",
+        "description": "one agent & customers with random decisioning",
         "team_prefix": ("adversary_", "agent_"),
         "all_agents_one_policy": False,
         "one_agent_one_policy": True,
@@ -22,7 +22,7 @@ policy_mapping_dict = {
 }
 
 
-class RLlibMAGym(MultiAgentEnv):
+class RLlibDLP(MultiAgentEnv):
 
     def __init__(self, env_config):
         map = env_config["map_name"]
@@ -36,16 +36,7 @@ class RLlibMAGym(MultiAgentEnv):
         # assume all agent same action/obs space
         # self.action_space = self.env.action_space[0]
         self.action_space = self.env.action_space
-        self.observation_space = GymDict(
-            {
-                "obs": Box(
-                    low=0.0,
-                    high=1.0,
-                    shape=(self.env.observation_space.shape[0],),
-                    dtype=self.env.observation_space.dtype,
-                )
-            }
-        )
+        self.observation_space = self.env.observation_space
         self.agents = self.env.agents
         self.num_agents = len(self.agents)
         env_config["map_name"] = map
@@ -71,10 +62,10 @@ class RLlibMAGym(MultiAgentEnv):
     def close(self):
         self.env.close()
 
-    def render(self, mode=None):
-        self.env.render()
-        time.sleep(0.05)
-        return True
+    # def render(self, mode=None):
+    #     self.env.render()
+    #     time.sleep(0.05)
+    #     return True
 
     def get_env_info(self):
         env_info = {
